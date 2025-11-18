@@ -1,0 +1,121 @@
+instruction_id,sample1_id,sample2_id,sample3_id,instruction,sample1,sample2,sample3,Fid_rank1_sample,Fid_rank2_sample,Fid_rank3_sample,Instr_rank1_sample,Instr_rank2_sample,Instr_rank3_sample
+0,3dc9f7b0-45b6-4a84-9423-1c99f0288e89,5432fe02-d7a4-4013-85b1-6958325ab4dc,48ad8a1f-67cf-46e0-9014-d233d143b828,"At the beginning: the pattern complexity is middle, the time series slowly rise.
+The distribution of the value in time series is shifted to the negative, and has low kurtosis.
+At the middle: there are 1 peaks, the pattern complexity is middle, the time series slowly rise.
+For the ovearll shape, the time series going upward.
+At the end: the pattern complexity is low, the time series has a slow downward trend.
+The main season cycles is around 1 pi.",TimeWeaver_0_3dc9f7b0.png,TEdit_0_5432fe02.png,GenTS_0_48ad8a1f.png,,,,,,
+1,52707828-1496-47a1-bbee-8fd2d785c739,77b7c49c-6389-4b02-b503-6a90625ece4d,4f7fdb9f-061e-4c9d-9408-9732eeecc184,"The distribution of the value in time series is symmetrical, and has low kurtosis.
+The main season cycles is around 1 pi.
+At the beginning: the pattern complexity is middle, the time series increases by time.
+For the ovearll shape, the trend direction is up.
+At the end: the pattern complexity is middle, the time series has a slow upward trend.
+At the middle: the pattern complexity is middle, the values in the time series are slightly climbing.",TEdit_1_52707828.png,GenTS_1_77b7c49c.png,TimeWeaver_1_4f7fdb9f.png,,,,,,
+2,62b6acf3-91c8-40a6-9e99-4e5bf3585fdb,7affc86e-21b8-4198-8ae1-4f4647e8cc05,7f5d5bf4-4c02-40eb-93b5-a2082bfb5a0b,"The distribution of the value in time series is symmetrical, and has normal kurtosis.
+For the ovearll shape, the time series slowly rise.
+The main season cycles is around 2 pi.
+At the end: the pattern complexity is middle, the values in the time series are slightly decreasing.
+At the beginning: the pattern complexity is middle, the time series going downward.
+At the middle: there are 1 peaks, the pattern complexity is middle, the time series slowly rise.",GenTS_2_62b6acf3.png,TimeWeaver_2_7affc86e.png,TEdit_2_7f5d5bf4.png,,,,,,
+3,458a0531-9b51-4b46-b331-cfb4619e38db,821cbbb3-5ddc-4f4b-8f71-243d90f1f954,5a50ab91-e9bf-4d99-8ed9-9533c319c0aa,"The main season cycles is around 1 pi.
+At the middle: the pattern complexity is middle, the values in the time series are slightly decreasing.
+The distribution of the value in time series is shifted to the positive, and has normal kurtosis.
+At the end: there are 1 peaks, the pattern complexity is middle, the time series slowly drop.
+For the ovearll shape, the time series slowly drop.
+At the beginning: the pattern complexity is middle, the time series has a slow downward trend.",TimeWeaver_3_458a0531.png,TEdit_3_821cbbb3.png,GenTS_3_5a50ab91.png,,,,,,
+4,48433a26-0b53-4467-944d-ef0118f49aa9,22e6788e-dd0e-4864-9baf-7973838a777b,b5530c9e-9cf8-4dc8-b841-de6ec9f56758,"The distribution of the value in time series is shifted to the negative, and has normal kurtosis.
+For the ovearll shape, the time series decreases by time.
+At the end: the pattern complexity is middle, the time series going downward.
+The main season cycles is around 1 pi.
+At the beginning: there are 1 peaks, the pattern complexity is middle, the time series has upward trend but not obvious.
+At the middle: there are 1 peaks, the pattern complexity is middle, the values in the time series are slightly decreasing.",TimeWeaver_4_48433a26.png,TEdit_4_22e6788e.png,GenTS_4_b5530c9e.png,,,,,,
+5,2774a066-c6ac-4e38-8149-0c73919a9306,41ab4048-1de0-4de3-ae90-1b3cc10c9451,536bfcd1-13c1-43b0-bfac-4bf85eba4229,"At the beginning: the pattern complexity is middle, the time series going downward.
+At the middle: the pattern complexity is middle, the values in the time series are slightly decreasing.
+The distribution of the value in time series is shifted to the positive, and has normal kurtosis.
+The main season cycles is around 1 pi.
+At the end: there are 1 peaks, the pattern complexity is middle, the time series slowly drop.
+For the ovearll shape, the time series going downward.",GenTS_5_2774a066.png,TEdit_5_41ab4048.png,TimeWeaver_5_536bfcd1.png,,,,,,
+6,5bdeeea6-69f5-4c56-8e98-75c653a6fd4a,c8916ce6-9d78-499b-98e6-92c492065b97,397c1be2-6601-4c5a-b3bd-6fa81ddc4e89,"The main season cycles is around 1 pi.
+At the middle: there are 1 peaks, the pattern complexity is middle, the values in the time series are slightly climbing.
+At the end: there are 1 peaks, the pattern complexity is middle, the time series increases by time.
+For the ovearll shape, the time series going upward.
+At the beginning: the pattern complexity is middle, the time series going upward.
+The distribution of the value in time series is shifted to the positive, and has high kurtosis.",GenTS_6_5bdeeea6.png,TimeWeaver_6_c8916ce6.png,TEdit_6_397c1be2.png,,,,,,
+7,876e658a-5b0e-4fb1-a536-06d4c8560aee,f820388d-3113-4075-95c0-7985276b11f8,dcaa8c56-5a6b-489e-9391-dc6f300b59b7,"The distribution of the value in time series is shifted to the negative, and has low kurtosis.
+At the middle: the pattern complexity is high, the time series rise obviously.
+At the end: the pattern complexity is middle, the time series going upward.
+The main season cycles is around 1 pi.
+At the beginning: the pattern complexity is high, the time series rise obviously.
+For the ovearll shape, the time series rise obviously.",TimeWeaver_7_876e658a.png,TEdit_7_f820388d.png,GenTS_7_dcaa8c56.png,,,,,,
+8,02041ded-8b2f-4495-bebb-e11a1becf4e5,023bfad5-a2cc-4f1b-afcb-93d9aa659db0,6d3ba499-f738-4ab9-9c80-b89de87739ee,"The main season cycles is around 1 pi.
+At the middle: there are 1 peaks, the pattern complexity is middle, the time series has a slow downward trend.
+At the end: there are 1 peaks, the pattern complexity is middle, the time series slowly rise.
+For the ovearll shape, the time series slowly drop.
+At the beginning: the pattern complexity is middle, the time series has a slow downward trend.
+The distribution of the value in time series is shifted to the positive, and has normal kurtosis.",GenTS_8_02041ded.png,TimeWeaver_8_023bfad5.png,TEdit_8_6d3ba499.png,,,,,,
+9,1d5f35ca-d455-495d-afe0-5dd1b29c3d5c,a1a874ee-7503-4329-8380-6b4a6ec9cf20,68dc40f5-f51c-4c6d-9f69-20e1d5e56748,"At the beginning: the pattern complexity is middle, the time series has a slow upward trend.
+The distribution of the value in time series is symmetrical, and has low kurtosis.
+The main season cycles is around 1 pi.
+At the middle: the pattern complexity is middle, the time series increases by time.
+For the ovearll shape, the time series going upward.
+At the end: the pattern complexity is middle, the time series slowly rise.",TEdit_9_1d5f35ca.png,TimeWeaver_9_a1a874ee.png,GenTS_9_68dc40f5.png,,,,,,
+10,17d97ac5-4a7a-4979-8c34-c931e81373c0,6a11e88b-8549-449e-9ddd-f3a09be6a619,a828f10c-ee6f-42ef-812f-18f62519f9ce,"The main season cycles is around 1 pi.
+At the middle: the pattern complexity is middle, the trend direction is down.
+The distribution of the value in time series is symmetrical, and has low kurtosis.
+At the end: the pattern complexity is middle, the time series going downward.
+At the beginning: the pattern complexity is middle, the time series decreases by time.
+For the ovearll shape, the time series drop obviously.",GenTS_10_17d97ac5.png,TEdit_10_6a11e88b.png,TimeWeaver_10_a828f10c.png,,,,,,
+11,ea8806e1-0493-4ed0-9676-7858647cb6db,cfb40eb1-26e3-46e1-97de-db6de06fe762,82404610-8f69-4beb-8a09-55d3979c1938,"The distribution of the value in time series is shifted to the positive, and has normal kurtosis.
+At the middle: the pattern complexity is middle, the time series has downward trend but not obvious.
+For the ovearll shape, the time series slowly rise.
+The main season cycles is around 1 pi.
+At the end: there are 1 peaks, the pattern complexity is middle, the time series increases by time.
+At the beginning: there are 1 peaks, the pattern complexity is middle, the time series has upward trend but not obvious.",TimeWeaver_11_ea8806e1.png,GenTS_11_cfb40eb1.png,TEdit_11_82404610.png,,,,,,
+12,4228290a-fc55-4656-b3c3-140384623661,280774c7-a5f1-40e0-817e-91463ded8094,929618f1-087d-460e-844b-04dd8e0c632a,"For the ovearll shape, the values in the time series are slightly decreasing.
+At the beginning: the pattern complexity is middle, the time series has a slow downward trend.
+At the middle: there are 1 peaks, the pattern complexity is middle, the time series has a slow downward trend.
+The main season cycles is around 1 pi.
+At the end: the pattern complexity is middle, the time series slowly drop.
+The distribution of the value in time series is shifted to the positive, and has normal kurtosis.",TimeWeaver_12_4228290a.png,TEdit_12_280774c7.png,GenTS_12_929618f1.png,,,,,,
+13,77110000-8fc6-457c-b161-6fa07cf38a6a,1f176ddc-899c-4fc7-a75c-4f222cfbadfb,85d6ea05-eee0-4dc7-a86a-8344d31db63e,"At the beginning: the pattern complexity is high, the trend direction is down.
+The distribution of the value in time series is shifted to the positive, and has normal kurtosis.
+At the middle: the pattern complexity is middle, the time series has a slow upward trend.
+The main season cycles is around 1 pi.
+At the end: there are 1 peaks, the pattern complexity is middle, the values in the time series are slightly decreasing.
+For the ovearll shape, the time series going downward.",TimeWeaver_13_77110000.png,TEdit_13_1f176ddc.png,GenTS_13_85d6ea05.png,,,,,,
+14,9652c68d-a99f-4bb6-a3a3-5737841006ef,37c3c670-cd19-4948-bfd1-707b56aec25e,cc20056b-f78c-4f8a-82c4-8bb2e39b7e29,"At the beginning: the pattern complexity is middle, the time series has upward trend but not obvious.
+The distribution of the value in time series is shifted to the positive, and has high kurtosis.
+The main season cycles is around 2 pi.
+For the ovearll shape, the time series slowly rise.
+At the middle: there are 1 peaks, the pattern complexity is middle, the time series has a slow downward trend.
+At the end: the pattern complexity is middle, the values in the time series are slightly climbing.",TEdit_14_9652c68d.png,GenTS_14_37c3c670.png,TimeWeaver_14_cc20056b.png,,,,,,
+15,96720cea-3007-4c86-91ec-dca2c97329ff,c4d44d58-c412-4135-9015-a7bf1742d67b,b9cb5fd9-4ace-47f3-91be-7ee6b8aada9a,"For the ovearll shape, the time series drop obviously.
+At the middle: the pattern complexity is high, the time series has a sharp downward trend.
+At the beginning: the pattern complexity is middle, the time series decreases by time.
+The main season cycles is around 1 pi.
+The distribution of the value in time series is symmetrical, and has low kurtosis.
+At the end: the pattern complexity is middle, the time series has a sharp downward trend.",TimeWeaver_15_96720cea.png,GenTS_15_c4d44d58.png,TEdit_15_b9cb5fd9.png,,,,,,
+16,0faaf602-dc8e-4b0b-a40e-ed5d5308919c,30d47fb1-ec44-4882-a4a4-b023ab322e99,a4c1886e-ac8e-45ad-89dc-d1054d0df25f,"The main season cycles is around 1 pi.
+For the ovearll shape, the time series has a slow upward trend.
+At the middle: there are 1 peaks, the pattern complexity is middle, the time series has upward trend but not obvious.
+At the end: the pattern complexity is middle, the time series has a sharp downward trend.
+The distribution of the value in time series is symmetrical, and has low kurtosis.
+At the beginning: the pattern complexity is high, the time series has a sharp upward trend.",TimeWeaver_16_0faaf602.png,TEdit_16_30d47fb1.png,GenTS_16_a4c1886e.png,,,,,,
+17,d5642a98-7d78-4de4-8c05-8d13772380f4,cfb71928-11a3-4a06-ac0e-d2c918c75115,8da641bf-2e27-4304-851d-6658e88967c2,"The main season cycles is around 1 pi.
+At the end: the pattern complexity is middle, the values in the time series are slightly climbing.
+At the middle: the pattern complexity is middle, the time series increases by time.
+For the ovearll shape, the time series going up rapidly.
+At the beginning: the pattern complexity is middle, the trend direction is up.
+The distribution of the value in time series is symmetrical, and has low kurtosis.",TimeWeaver_17_d5642a98.png,TEdit_17_cfb71928.png,GenTS_17_8da641bf.png,,,,,,
+18,c6ac2e7a-a655-4c93-bbeb-a33079caa595,b8777fa2-70ec-4189-af5e-7d7584472336,02262b3a-2487-44a8-a257-9b43dfafe16c,"The distribution of the value in time series is symmetrical, and has low kurtosis.
+At the end: there are 1 peaks, the pattern complexity is middle, the values in the time series are slightly climbing.
+The main season cycles is around 1 pi.
+At the middle: there are 1 peaks, the pattern complexity is middle, the trend direction is down.
+At the beginning: the pattern complexity is middle, the time series rise obviously.
+For the ovearll shape, the time series slowly rise.",TEdit_18_c6ac2e7a.png,GenTS_18_b8777fa2.png,TimeWeaver_18_02262b3a.png,,,,,,
+19,b7d365dc-d037-44a9-9480-cd7bf2f6c1ff,864a450a-dcd0-45f9-94d6-d5ebde410d92,16cd8d28-d2d3-490a-b694-7ccde4969946,"The main season cycles is around 1 pi.
+At the end: the pattern complexity is middle, the trend direction is up.
+At the beginning: there are 1 peaks, the pattern complexity is middle, the time series has a slow downward trend.
+At the middle: the pattern complexity is middle, the time series has a slow upward trend.
+For the ovearll shape, the time series has a sharp upward trend.
+The distribution of the value in time series is shifted to the positive, and has normal kurtosis.",TEdit_19_b7d365dc.png,TimeWeaver_19_864a450a.png,GenTS_19_16cd8d28.png,,,,,,

@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Series Evaluation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            border-bottom: 3px solid #34495e;
+        }
+        
+        .header h1 {
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .header .task-description {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .header .dimensions {
+            font-size: 0.95em;
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+        
+        .header .dimensions li {
+            margin-bottom: 5px;
+        }
+        
+        .collapsible {
+            background: #34495e;
+            color: white;
+            cursor: pointer;
+            padding: 12px 20px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 0.95em;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .collapsible:hover {
+            background-color: #455a64;
+        }
+        
+        .collapsible:after {
+            content: '▼';
+            font-size: 0.8em;
+            transition: transform 0.3s;
+        }
+        
+        .collapsible.active:after {
+            transform: rotate(-180deg);
+        }
+        
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: #263238;
+            padding: 0 20px;
+        }
+        
+        .collapsible-content.active {
+            padding: 15px 20px;
+        }
+        
+        .collapsible-content p {
+            margin-bottom: 12px;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        
+        .collapsible-content strong {
+            color: #81c784;
+        }
+        
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 30px;
+            background: #ecf0f1;
+            border-bottom: 1px solid #bdc3c7;
+            font-size: 0.9em;
+        }
+        
+        .info-item {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .info-label {
+            color: #7f8c8d;
+        }
+        
+        .info-value {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .progress-container {
+            padding: 15px 30px;
+            background: white;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .progress-label {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #ecf0f1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #3498db;
+            transition: width 0.3s ease;
+        }
+        
+        .user-section {
+            padding: 15px 30px;
+            background: #fff9e6;
+            border-left: 3px solid #f39c12;
+            margin: 0;
+            font-size: 0.9em;
+        }
+        
+        .user-section strong {
+            color: #d68910;
+        }
+        
+        .download-section {
+            padding: 20px 30px;
+            text-align: center;
+            background: #fafafa;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .download-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 0.95em;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        .download-btn:hover {
+            background: #229954;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .instruction-block {
+            background: white;
+            border: 1px solid #ddd;
+            margin-bottom: 30px;
+            padding: 25px;
+        }
+        
+        .instruction-header {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+        
+        .instruction-text {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-left: 3px solid #95a5a6;
+            color: #2c3e50;
+            font-size: 0.9em;
+            white-space: pre-line;
+        }
+        
+        .samples-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .sample-card {
+            border: 1px solid #ddd;
+            padding: 12px;
+            background: #fafafa;
+        }
+        
+        .sample-header {
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        
+        .sample-id {
+            font-size: 0.75em;
+            color: #95a5a6;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 10px;
+            word-break: break-all;
+        }
+        
+        .sample-image {
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+        
+        .ranking-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .ranking-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1em;
+        }
+        
+        .ranking-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .ranking-item {
+            background: white;
+            padding: 15px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .ranking-label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.85em;
+            margin-bottom: 10px;
+        }
+        
+        .ranking-inputs {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .rank-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ced4da;
+            font-size: 0.9em;
+            text-align: center;
+            transition: border-color 0.2s;
+            min-width: 90px;
+            max-width: 100px;
+        }
+        
+        .rank-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .rank-input.saved {
+            border-color: #27ae60;
+            background: #d5f4e6;
+        }
+        
+        .hint {
+            margin-top: 12px;
+            padding: 10px;
+            background: #e8f4f8;
+            border-left: 3px solid #3498db;
+            font-size: 0.85em;
+            color: #2c3e50;
+        }
+        
+        @media (max-width: 1024px) {
+            .samples-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .ranking-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Time Series Human Evaluation</h1>
+            <div class="task-description">Task: Evaluating Text-Conditioned Time Series Generation Quality</div>
+            <div class="dimensions">
+                <strong>Evaluation Dimensions:</strong>
+                <ol>
+                    <li>Fidelity</li>
+                    <li>Instruction Following</li>
+                </ol>
+            </div>
+            
+            <button class="collapsible">Dimension Definitions</button>
+            <div class="collapsible-content">
+                <p><strong>Fidelity:</strong> Authenticity of the generated time series data. (Sub-dimensions: Relative to time series data for the same scenario in the real world, authenticity of overall value distribution, authenticity of periodicity, authenticity of extrema)</p>
+                <p><strong>Instruction Following:</strong> Success in satisfying the instruction text requirements with the generated time series. (Sub-dimensions: overall complexity, overall trend, overall distribution, overall extrema, overall periodicity, local complexity, local trend, local extrema, accuracy of local feature timestamps, accuracy of overall feature temporal dimensions, etc.)</p>
+            </div>
+            
+            <button class="collapsible">Time Series Terminology</button>
+            <div class="collapsible-content">
+                <p><strong>Complexity:</strong> A measure of the complexity of a time series; higher values indicate a more complex and irregular sequence. It is defined as the number of dictionary entries (or sub-words) needed to encode the time series when viewed from left to right.</p>
+                <p><strong>Kurtosis:</strong> Measures the "peakedness" of a distribution or the prevalence of extreme values. Positive values indicate a distribution sharper than normal with more extremes; negative values indicate a flatter distribution with fewer extremes; values near 0 indicate near-normal.</p>
+                <p><strong>Skewness:</strong> Measures the symmetry or direction of skew of a distribution. Positive values indicate right skew (a long right tail); negative values indicate left skew (a long left tail); values near 0 indicate approximate symmetry.</p>
+                <p><strong>Symmetrical Pattern:</strong> Boolean variable denoting if the distribution of x looks symmetric. Evaluated by comparing the difference between the mean and the median. If the mean and median are very close (relative to the data range), the series is considered to have a symmetrical pattern.</p>
+                <p><strong>Season Cycle:</strong> A regular pattern that repeats at fixed time intervals in a time series. Check whether similar upward or downward patterns occur at specific time points.</p>
+            </div>
+        </div>
+        
+        <div class="info-bar">
+            <div class="info-item">
+                <span class="info-label">Instructions:</span>
+                <span class="info-value">20</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Total Samples:</span>
+                <span class="info-value">60</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Completed:</span>
+                <span class="info-value" id="completed-count">0</span>
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-label">Progress: <span id="progress-text">0%</span></div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+        
+        <div class="user-section">
+            <strong>User ID:</strong> <span id="user-id"></span>
+            <br><small>This ID is stored locally and will be included in your CSV export.</small>
+        </div>
+        
+        <div class="download-section">
+            <button class="download-btn" onclick="downloadCSV()">Download Responses (CSV)</button>
+        </div>
+        
+        <div class="content" id="content">
+            <!-- Content will be generated by JavaScript -->
+        </div>
+    </div>
+    
+    <script>
+        const evaluationData = [{"instruction_id":0,"sample1_id":"3dc9f7b0-45b6-4a84-9423-1c99f0288e89","sample2_id":"5432fe02-d7a4-4013-85b1-6958325ab4dc","sample3_id":"48ad8a1f-67cf-46e0-9014-d233d143b828","instruction":"At the beginning: the pattern complexity is middle, the time series slowly rise.\nThe distribution of the value in time series is shifted to the negative, and has low kurtosis.\nAt the middle: there are 1 peaks, the pattern complexity is middle, the time series slowly rise.\nFor the ovearll shape, the time series going upward.\nAt the end: the pattern complexity is low, the time series has a slow downward trend.\nThe main season cycles is around 1 pi.","sample1":"TimeWeaver_0_3dc9f7b0.png","sample2":"TEdit_0_5432fe02.png","sample3":"GenTS_0_48ad8a1f.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":1,"sample1_id":"52707828-1496-47a1-bbee-8fd2d785c739","sample2_id":"77b7c49c-6389-4b02-b503-6a90625ece4d","sample3_id":"4f7fdb9f-061e-4c9d-9408-9732eeecc184","instruction":"The distribution of the value in time series is symmetrical, and has low kurtosis.\nThe main season cycles is around 1 pi.\nAt the beginning: the pattern complexity is middle, the time series increases by time.\nFor the ovearll shape, the trend direction is up.\nAt the end: the pattern complexity is middle, the time series has a slow upward trend.\nAt the middle: the pattern complexity is middle, the values in the time series are slightly climbing.","sample1":"TEdit_1_52707828.png","sample2":"GenTS_1_77b7c49c.png","sample3":"TimeWeaver_1_4f7fdb9f.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":2,"sample1_id":"62b6acf3-91c8-40a6-9e99-4e5bf3585fdb","sample2_id":"7affc86e-21b8-4198-8ae1-4f4647e8cc05","sample3_id":"7f5d5bf4-4c02-40eb-93b5-a2082bfb5a0b","instruction":"The distribution of the value in time series is symmetrical, and has normal kurtosis.\nFor the ovearll shape, the time series slowly rise.\nThe main season cycles is around 2 pi.\nAt the end: the pattern complexity is middle, the values in the time series are slightly decreasing.\nAt the beginning: the pattern complexity is middle, the time series going downward.\nAt the middle: there are 1 peaks, the pattern complexity is middle, the time series slowly rise.","sample1":"GenTS_2_62b6acf3.png","sample2":"TimeWeaver_2_7affc86e.png","sample3":"TEdit_2_7f5d5bf4.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":3,"sample1_id":"458a0531-9b51-4b46-b331-cfb4619e38db","sample2_id":"821cbbb3-5ddc-4f4b-8f71-243d90f1f954","sample3_id":"5a50ab91-e9bf-4d99-8ed9-9533c319c0aa","instruction":"The main season cycles is around 1 pi.\nAt the middle: the pattern complexity is middle, the values in the time series are slightly decreasing.\nThe distribution of the value in time series is shifted to the positive, and has normal kurtosis.\nAt the end: there are 1 peaks, the pattern complexity is middle, the time series slowly drop.\nFor the ovearll shape, the time series slowly drop.\nAt the beginning: the pattern complexity is middle, the time series has a slow downward trend.","sample1":"TimeWeaver_3_458a0531.png","sample2":"TEdit_3_821cbbb3.png","sample3":"GenTS_3_5a50ab91.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":4,"sample1_id":"48433a26-0b53-4467-944d-ef0118f49aa9","sample2_id":"22e6788e-dd0e-4864-9baf-7973838a777b","sample3_id":"b5530c9e-9cf8-4dc8-b841-de6ec9f56758","instruction":"The distribution of the value in time series is shifted to the negative, and has normal kurtosis.\nFor the ovearll shape, the time series decreases by time.\nAt the end: the pattern complexity is middle, the time series going downward.\nThe main season cycles is around 1 pi.\nAt the beginning: there are 1 peaks, the pattern complexity is middle, the time series has upward trend but not obvious.\nAt the middle: there are 1 peaks, the pattern complexity is middle, the values in the time series are slightly decreasing.","sample1":"TimeWeaver_4_48433a26.png","sample2":"TEdit_4_22e6788e.png","sample3":"GenTS_4_b5530c9e.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":5,"sample1_id":"2774a066-c6ac-4e38-8149-0c73919a9306","sample2_id":"41ab4048-1de0-4de3-ae90-1b3cc10c9451","sample3_id":"536bfcd1-13c1-43b0-bfac-4bf85eba4229","instruction":"At the beginning: the pattern complexity is middle, the time series going downward.\nAt the middle: the pattern complexity is middle, the values in the time series are slightly decreasing.\nThe distribution of the value in time series is shifted to the positive, and has normal kurtosis.\nThe main season cycles is around 1 pi.\nAt the end: there are 1 peaks, the pattern complexity is middle, the time series slowly drop.\nFor the ovearll shape, the time series going downward.","sample1":"GenTS_5_2774a066.png","sample2":"TEdit_5_41ab4048.png","sample3":"TimeWeaver_5_536bfcd1.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":6,"sample1_id":"5bdeeea6-69f5-4c56-8e98-75c653a6fd4a","sample2_id":"c8916ce6-9d78-499b-98e6-92c492065b97","sample3_id":"397c1be2-6601-4c5a-b3bd-6fa81ddc4e89","instruction":"The main season cycles is around 1 pi.\nAt the middle: there are 1 peaks, the pattern complexity is middle, the values in the time series are slightly climbing.\nAt the end: there are 1 peaks, the pattern complexity is middle, the time series increases by time.\nFor the ovearll shape, the time series going upward.\nAt the beginning: the pattern complexity is middle, the time series going upward.\nThe distribution of the value in time series is shifted to the positive, and has high kurtosis.","sample1":"GenTS_6_5bdeeea6.png","sample2":"TimeWeaver_6_c8916ce6.png","sample3":"TEdit_6_397c1be2.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":7,"sample1_id":"876e658a-5b0e-4fb1-a536-06d4c8560aee","sample2_id":"f820388d-3113-4075-95c0-7985276b11f8","sample3_id":"dcaa8c56-5a6b-489e-9391-dc6f300b59b7","instruction":"The distribution of the value in time series is shifted to the negative, and has low kurtosis.\nAt the middle: the pattern complexity is high, the time series rise obviously.\nAt the end: the pattern complexity is middle, the time series going upward.\nThe main season cycles is around 1 pi.\nAt the beginning: the pattern complexity is high, the time series rise obviously.\nFor the ovearll shape, the time series rise obviously.","sample1":"TimeWeaver_7_876e658a.png","sample2":"TEdit_7_f820388d.png","sample3":"GenTS_7_dcaa8c56.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":8,"sample1_id":"02041ded-8b2f-4495-bebb-e11a1becf4e5","sample2_id":"023bfad5-a2cc-4f1b-afcb-93d9aa659db0","sample3_id":"6d3ba499-f738-4ab9-9c80-b89de87739ee","instruction":"The main season cycles is around 1 pi.\nAt the middle: there are 1 peaks, the pattern complexity is middle, the time series has a slow downward trend.\nAt the end: there are 1 peaks, the pattern complexity is middle, the time series slowly rise.\nFor the ovearll shape, the time series slowly drop.\nAt the beginning: the pattern complexity is middle, the time series has a slow downward trend.\nThe distribution of the value in time series is shifted to the positive, and has normal kurtosis.","sample1":"GenTS_8_02041ded.png","sample2":"TimeWeaver_8_023bfad5.png","sample3":"TEdit_8_6d3ba499.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":9,"sample1_id":"1d5f35ca-d455-495d-afe0-5dd1b29c3d5c","sample2_id":"a1a874ee-7503-4329-8380-6b4a6ec9cf20","sample3_id":"68dc40f5-f51c-4c6d-9f69-20e1d5e56748","instruction":"At the beginning: the pattern complexity is middle, the time series has a slow upward trend.\nThe distribution of the value in time series is symmetrical, and has low kurtosis.\nThe main season cycles is around 1 pi.\nAt the middle: the pattern complexity is middle, the time series increases by time.\nFor the ovearll shape, the time series going upward.\nAt the end: the pattern complexity is middle, the time series slowly rise.","sample1":"TEdit_9_1d5f35ca.png","sample2":"TimeWeaver_9_a1a874ee.png","sample3":"GenTS_9_68dc40f5.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":10,"sample1_id":"17d97ac5-4a7a-4979-8c34-c931e81373c0","sample2_id":"6a11e88b-8549-449e-9ddd-f3a09be6a619","sample3_id":"a828f10c-ee6f-42ef-812f-18f62519f9ce","instruction":"The main season cycles is around 1 pi.\nAt the middle: the pattern complexity is middle, the trend direction is down.\nThe distribution of the value in time series is symmetrical, and has low kurtosis.\nAt the end: the pattern complexity is middle, the time series going downward.\nAt the beginning: the pattern complexity is middle, the time series decreases by time.\nFor the ovearll shape, the time series drop obviously.","sample1":"GenTS_10_17d97ac5.png","sample2":"TEdit_10_6a11e88b.png","sample3":"TimeWeaver_10_a828f10c.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":11,"sample1_id":"ea8806e1-0493-4ed0-9676-7858647cb6db","sample2_id":"cfb40eb1-26e3-46e1-97de-db6de06fe762","sample3_id":"82404610-8f69-4beb-8a09-55d3979c1938","instruction":"The distribution of the value in time series is shifted to the positive, and has normal kurtosis.\nAt the middle: the pattern complexity is middle, the time series has downward trend but not obvious.\nFor the ovearll shape, the time series slowly rise.\nThe main season cycles is around 1 pi.\nAt the end: there are 1 peaks, the pattern complexity is middle, the time series increases by time.\nAt the beginning: there are 1 peaks, the pattern complexity is middle, the time series has upward trend but not obvious.","sample1":"TimeWeaver_11_ea8806e1.png","sample2":"GenTS_11_cfb40eb1.png","sample3":"TEdit_11_82404610.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":12,"sample1_id":"4228290a-fc55-4656-b3c3-140384623661","sample2_id":"280774c7-a5f1-40e0-817e-91463ded8094","sample3_id":"929618f1-087d-460e-844b-04dd8e0c632a","instruction":"For the ovearll shape, the values in the time series are slightly decreasing.\nAt the beginning: the pattern complexity is middle, the time series has a slow downward trend.\nAt the middle: there are 1 peaks, the pattern complexity is middle, the time series has a slow downward trend.\nThe main season cycles is around 1 pi.\nAt the end: the pattern complexity is middle, the time series slowly drop.\nThe distribution of the value in time series is shifted to the positive, and has normal kurtosis.","sample1":"TimeWeaver_12_4228290a.png","sample2":"TEdit_12_280774c7.png","sample3":"GenTS_12_929618f1.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":13,"sample1_id":"77110000-8fc6-457c-b161-6fa07cf38a6a","sample2_id":"1f176ddc-899c-4fc7-a75c-4f222cfbadfb","sample3_id":"85d6ea05-eee0-4dc7-a86a-8344d31db63e","instruction":"At the beginning: the pattern complexity is high, the trend direction is down.\nThe distribution of the value in time series is shifted to the positive, and has normal kurtosis.\nAt the middle: the pattern complexity is middle, the time series has a slow upward trend.\nThe main season cycles is around 1 pi.\nAt the end: there are 1 peaks, the pattern complexity is middle, the values in the time series are slightly decreasing.\nFor the ovearll shape, the time series going downward.","sample1":"TimeWeaver_13_77110000.png","sample2":"TEdit_13_1f176ddc.png","sample3":"GenTS_13_85d6ea05.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":14,"sample1_id":"9652c68d-a99f-4bb6-a3a3-5737841006ef","sample2_id":"37c3c670-cd19-4948-bfd1-707b56aec25e","sample3_id":"cc20056b-f78c-4f8a-82c4-8bb2e39b7e29","instruction":"At the beginning: the pattern complexity is middle, the time series has upward trend but not obvious.\nThe distribution of the value in time series is shifted to the positive, and has high kurtosis.\nThe main season cycles is around 2 pi.\nFor the ovearll shape, the time series slowly rise.\nAt the middle: there are 1 peaks, the pattern complexity is middle, the time series has a slow downward trend.\nAt the end: the pattern complexity is middle, the values in the time series are slightly climbing.","sample1":"TEdit_14_9652c68d.png","sample2":"GenTS_14_37c3c670.png","sample3":"TimeWeaver_14_cc20056b.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":15,"sample1_id":"96720cea-3007-4c86-91ec-dca2c97329ff","sample2_id":"c4d44d58-c412-4135-9015-a7bf1742d67b","sample3_id":"b9cb5fd9-4ace-47f3-91be-7ee6b8aada9a","instruction":"For the ovearll shape, the time series drop obviously.\nAt the middle: the pattern complexity is high, the time series has a sharp downward trend.\nAt the beginning: the pattern complexity is middle, the time series decreases by time.\nThe main season cycles is around 1 pi.\nThe distribution of the value in time series is symmetrical, and has low kurtosis.\nAt the end: the pattern complexity is middle, the time series has a sharp downward trend.","sample1":"TimeWeaver_15_96720cea.png","sample2":"GenTS_15_c4d44d58.png","sample3":"TEdit_15_b9cb5fd9.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":16,"sample1_id":"0faaf602-dc8e-4b0b-a40e-ed5d5308919c","sample2_id":"30d47fb1-ec44-4882-a4a4-b023ab322e99","sample3_id":"a4c1886e-ac8e-45ad-89dc-d1054d0df25f","instruction":"The main season cycles is around 1 pi.\nFor the ovearll shape, the time series has a slow upward trend.\nAt the middle: there are 1 peaks, the pattern complexity is middle, the time series has upward trend but not obvious.\nAt the end: the pattern complexity is middle, the time series has a sharp downward trend.\nThe distribution of the value in time series is symmetrical, and has low kurtosis.\nAt the beginning: the pattern complexity is high, the time series has a sharp upward trend.","sample1":"TimeWeaver_16_0faaf602.png","sample2":"TEdit_16_30d47fb1.png","sample3":"GenTS_16_a4c1886e.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":17,"sample1_id":"d5642a98-7d78-4de4-8c05-8d13772380f4","sample2_id":"cfb71928-11a3-4a06-ac0e-d2c918c75115","sample3_id":"8da641bf-2e27-4304-851d-6658e88967c2","instruction":"The main season cycles is around 1 pi.\nAt the end: the pattern complexity is middle, the values in the time series are slightly climbing.\nAt the middle: the pattern complexity is middle, the time series increases by time.\nFor the ovearll shape, the time series going up rapidly.\nAt the beginning: the pattern complexity is middle, the trend direction is up.\nThe distribution of the value in time series is symmetrical, and has low kurtosis.","sample1":"TimeWeaver_17_d5642a98.png","sample2":"TEdit_17_cfb71928.png","sample3":"GenTS_17_8da641bf.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":18,"sample1_id":"c6ac2e7a-a655-4c93-bbeb-a33079caa595","sample2_id":"b8777fa2-70ec-4189-af5e-7d7584472336","sample3_id":"02262b3a-2487-44a8-a257-9b43dfafe16c","instruction":"The distribution of the value in time series is symmetrical, and has low kurtosis.\nAt the end: there are 1 peaks, the pattern complexity is middle, the values in the time series are slightly climbing.\nThe main season cycles is around 1 pi.\nAt the middle: there are 1 peaks, the pattern complexity is middle, the trend direction is down.\nAt the beginning: the pattern complexity is middle, the time series rise obviously.\nFor the ovearll shape, the time series slowly rise.","sample1":"TEdit_18_c6ac2e7a.png","sample2":"GenTS_18_b8777fa2.png","sample3":"TimeWeaver_18_02262b3a.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null},{"instruction_id":19,"sample1_id":"b7d365dc-d037-44a9-9480-cd7bf2f6c1ff","sample2_id":"864a450a-dcd0-45f9-94d6-d5ebde410d92","sample3_id":"16cd8d28-d2d3-490a-b694-7ccde4969946","instruction":"The main season cycles is around 1 pi.\nAt the end: the pattern complexity is middle, the trend direction is up.\nAt the beginning: there are 1 peaks, the pattern complexity is middle, the time series has a slow downward trend.\nAt the middle: the pattern complexity is middle, the time series has a slow upward trend.\nFor the ovearll shape, the time series has a sharp upward trend.\nThe distribution of the value in time series is shifted to the positive, and has normal kurtosis.","sample1":"TEdit_19_b7d365dc.png","sample2":"TimeWeaver_19_864a450a.png","sample3":"GenTS_19_16cd8d28.png","Fid_rank1_sample":null,"Fid_rank2_sample":null,"Fid_rank3_sample":null,"Instr_rank1_sample":null,"Instr_rank2_sample":null,"Instr_rank3_sample":null}];
+        
+        // Collapsible functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const collapsibles = document.querySelectorAll('.collapsible');
+            collapsibles.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    const content = this.nextElementSibling;
+                    content.classList.toggle('active');
+                    
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                });
+            });
+        });
+        
+        function getUserId() {
+            let userId = localStorage.getItem('eval_user_id');
+            if (!userId) {
+                userId = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+                localStorage.setItem('eval_user_id', userId);
+            }
+            return userId;
+        }
+        
+        const userId = getUserId();
+        document.getElementById('user-id').textContent = userId;
+        
+        function saveRanking(instructionId, field, rank1, rank2, rank3) {
+            const key = `ranking_${instructionId}_${field}`;
+            const value = JSON.stringify({rank1, rank2, rank3});
+            localStorage.setItem(key, value);
+            updateProgress();
+        }
+        
+        function getRanking(instructionId, field) {
+            const key = `ranking_${instructionId}_${field}`;
+            const value = localStorage.getItem(key);
+            if (value) {
+                try {
+                    return JSON.parse(value);
+                } catch (e) {
+                    return {rank1: '', rank2: '', rank3: ''};
+                }
+            }
+            return {rank1: '', rank2: '', rank3: ''};
+        }
+        
+        function updateProgress() {
+            const totalInstructions = evaluationData.length;
+            let completed = 0;
+            
+            evaluationData.forEach(row => {
+                const fidelity = getRanking(row.instruction_id, 'fidelity');
+                const instruction = getRanking(row.instruction_id, 'instruction_following');
+                
+                if (fidelity.rank1 && fidelity.rank2 && fidelity.rank3 &&
+                    instruction.rank1 && instruction.rank2 && instruction.rank3) {
+                    completed++;
+                }
+            });
+            
+            const percentage = totalInstructions > 0 ? Math.round((completed / totalInstructions) * 100) : 0;
+            document.getElementById('completed-count').textContent = completed;
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = percentage + '%';
+        }
+        
+        function formatInstruction(instruction) {
+            // 在句号、问号、感叹号后添加换行
+            return instruction
+                .replace(/\.\s+/g, '.\n')
+                .replace(/\?\s+/g, '?\n')
+                .replace(/!\s+/g, '!\n')
+                .trim();
+        }
+        
+        function renderContent() {
+            const content = document.getElementById('content');
+            content.innerHTML = '';
+            
+            evaluationData.forEach((row, idx) => {
+                const block = document.createElement('div');
+                block.className = 'instruction-block';
+                
+                const header = document.createElement('div');
+                header.className = 'instruction-header';
+                header.textContent = `Instruction #${row.instruction_id}`;
+                block.appendChild(header);
+                
+                const instructionText = document.createElement('div');
+                instructionText.className = 'instruction-text';
+                instructionText.textContent = formatInstruction(row.instruction);
+                block.appendChild(instructionText);
+                
+                const samplesContainer = document.createElement('div');
+                samplesContainer.className = 'samples-container';
+                
+                for (let i = 1; i <= 3; i++) {
+                    const sampleCard = document.createElement('div');
+                    sampleCard.className = 'sample-card';
+                    
+                    const sampleHeader = document.createElement('div');
+                    sampleHeader.className = 'sample-header';
+                    sampleHeader.textContent = `Sample ${i}`;
+                    sampleCard.appendChild(sampleHeader);
+                    
+                    const sampleId = document.createElement('div');
+                    sampleId.className = 'sample-id';
+                    sampleId.textContent = row['sample' + i + '_id'];
+                    sampleCard.appendChild(sampleId);
+                    
+                    const img = document.createElement('img');
+                    img.className = 'sample-image';
+                    img.src = `plots/${row['sample' + i]}`;
+                    img.alt = `Sample ${i}`;
+                    img.onerror = function() {
+                        this.style.display = 'none';
+                        const errorDiv = document.createElement('div');
+                        errorDiv.style.padding = '40px';
+                        errorDiv.style.textAlign = 'center';
+                        errorDiv.style.color = '#999';
+                        errorDiv.textContent = 'Image not available';
+                        this.parentNode.appendChild(errorDiv);
+                    };
+                    sampleCard.appendChild(img);
+                    
+                    samplesContainer.appendChild(sampleCard);
+                }
+                
+                block.appendChild(samplesContainer);
+                
+                const rankingSection = document.createElement('div');
+                rankingSection.className = 'ranking-section';
+                
+                const rankingTitle = document.createElement('div');
+                rankingTitle.className = 'ranking-title';
+                rankingTitle.textContent = 'Evaluation Rankings';
+                rankingSection.appendChild(rankingTitle);
+                
+                const rankingGrid = document.createElement('div');
+                rankingGrid.className = 'ranking-grid';
+                
+                const fidelityRanking = getRanking(row.instruction_id, 'fidelity');
+                const fidelityDiv = createRankingInputs(
+                    'Fidelity (Best to Worst)',
+                    row.instruction_id,
+                    'fidelity',
+                    fidelityRanking
+                );
+                rankingGrid.appendChild(fidelityDiv);
+                
+                const instructionRanking = getRanking(row.instruction_id, 'instruction_following');
+                const instructionDiv = createRankingInputs(
+                    'Instruction Following (Best to Worst)',
+                    row.instruction_id,
+                    'instruction_following',
+                    instructionRanking
+                );
+                rankingGrid.appendChild(instructionDiv);
+                
+                rankingSection.appendChild(rankingGrid);
+                
+                const hint = document.createElement('div');
+                hint.className = 'hint';
+                hint.textContent = 'Enter sample numbers (1, 2, or 3) to rank from best to worst. Responses are saved automatically.';
+                rankingSection.appendChild(hint);
+                
+                block.appendChild(rankingSection);
+                content.appendChild(block);
+            });
+            
+            updateProgress();
+        }
+        
+        function createRankingInputs(label, instructionId, field, savedValues) {
+            const div = document.createElement('div');
+            div.className = 'ranking-item';
+            
+            const labelElem = document.createElement('div');
+            labelElem.className = 'ranking-label';
+            labelElem.textContent = label;
+            div.appendChild(labelElem);
+            
+            const inputsDiv = document.createElement('div');
+            inputsDiv.className = 'ranking-inputs';
+            
+            const ranks = ['rank1', 'rank2', 'rank3'];
+            const placeholders = ['Best', 'Middle', 'Worst'];
+            
+            ranks.forEach((rank, idx) => {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'rank-input';
+                input.placeholder = placeholders[idx];
+                input.value = savedValues[rank] || '';
+                input.maxLength = 1;
+                
+                input.addEventListener('input', function() {
+                    const value = this.value;
+                    if (value && !['1', '2', '3'].includes(value)) {
+                        this.value = '';
+                        return;
+                    }
+                    
+                    const inputs = this.parentNode.querySelectorAll('.rank-input');
+                    const rank1 = inputs[0].value;
+                    const rank2 = inputs[1].value;
+                    const rank3 = inputs[2].value;
+                    
+                    saveRanking(instructionId, field, rank1, rank2, rank3);
+                    
+                    this.classList.add('saved');
+                    setTimeout(() => this.classList.remove('saved'), 400);
+                });
+                
+                inputsDiv.appendChild(input);
+            });
+            
+            div.appendChild(inputsDiv);
+            return div;
+        }
+        
+        function downloadCSV() {
+            const rows = [];
+            
+            rows.push([
+                'user_id',
+                'instruction_id',
+                'instruction',
+                'sample1_id',
+                'sample1',
+                'sample2_id',
+                'sample2',
+                'sample3_id',
+                'sample3',
+                'Fid_rank1_sample',
+                'Fid_rank2_sample',
+                'Fid_rank3_sample',
+                'Instr_rank1_sample',
+                'Instr_rank2_sample',
+                'Instr_rank3_sample'
+            ]);
+            
+            evaluationData.forEach(row => {
+                const fidelity = getRanking(row.instruction_id, 'fidelity');
+                const instruction = getRanking(row.instruction_id, 'instruction_following');
+                
+                rows.push([
+                    userId,
+                    row.instruction_id,
+                    `"${row.instruction.replace(/"/g, '""')}"`,
+                    row.sample1_id,
+                    row.sample1,
+                    row.sample2_id,
+                    row.sample2,
+                    row.sample3_id,
+                    row.sample3,
+                    fidelity.rank1 || 'nan',
+                    fidelity.rank2 || 'nan',
+                    fidelity.rank3 || 'nan',
+                    instruction.rank1 || 'nan',
+                    instruction.rank2 || 'nan',
+                    instruction.rank3 || 'nan'
+                ]);
+            });
+            
+            const csvContent = rows.map(row => row.join(',')).join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+            const filename = `evaluation_${userId.slice(0, 8)}_${timestamp}.csv`;
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            alert('CSV file downloaded. Please send this file to the coordinator.');
+        }
+        
+        renderContent();
+    </script>
+</body>
+</html>
