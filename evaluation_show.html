@@ -515,7 +515,7 @@
                     
                     const img = document.createElement('img');
                     img.className = 'sample-image';
-                    img.src = `plots/${row['sample' + i]}`;
+                    img.src = row['sample' + i];
                     img.alt = `Sample ${i}`;
                     img.onerror = function() {
                         this.style.display = 'none';
